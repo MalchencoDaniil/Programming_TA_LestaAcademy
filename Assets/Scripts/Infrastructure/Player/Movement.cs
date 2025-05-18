@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace Player
@@ -8,15 +9,25 @@ namespace Player
         private Rigidbody _rb;
         private PlayerInput _playerInput;
 
+        [Header("References")]
+        [SerializeField]
+        private Animator _playerAnimator;
+
         [Header("Movement Settings")]
         [SerializeField]
         private float _movementSpeed = 6;
 
         [SerializeField]
+        private float _rotationSpeed = 15;
+
+        [Header("Jump Settings")]
+        [SerializeField]
         private float _jumpForce = 12;
 
         [SerializeField]
-        private float _rotationSpeed = 15;
+        private float _coyoteTime = 0.2f;
+
+        private float _coyoteTimeCounter;
 
         [Header("Drag")]
         [SerializeField]
@@ -76,6 +87,8 @@ namespace Player
             Vector3 _movementDirection = GetDirection();
             _movementDirection = _movementDirection.normalized;
 
+            _playerAnimator.SetFloat("Speed", _movementDirection.sqrMagnitude);
+
             Vector3 targetVelocity = _movementDirection * _movementSpeed;
 
             _rb.velocity = new Vector3(targetVelocity.x, _rb.velocity.y, targetVelocity.z);
@@ -110,15 +123,46 @@ namespace Player
             return (_cameraDirection * _input).normalized;
         }
 
-        private void Jump()
+        private bool IsJumping = false;
+
+        private async void Jump()
         {
-            if (IsGrounded() && _playerInput.CanJump())
+            if (IsGrounded())
             {
+                _coyoteTimeCounter = _coyoteTime;
+            }
+            else
+            {
+                _playerAnimator.SetBool("CanJump", true);
+                IsJumping = true;
+                _coyoteTimeCounter -= Time.deltaTime;
+            }
+
+            if (_coyoteTimeCounter > 0f && _playerInput.CanJump())
+            {
+                _playerAnimator.SetBool("CanJump", true);
+
                 Vector3 _horizontalVelocity = new Vector3(_rb.velocity.x, 0, _rb.velocity.z);
                 _rb.velocity = _horizontalVelocity;
 
                 _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
+
+                await JumpWaitTime();
+
+                _coyoteTimeCounter = 0f;
             }
+
+            if (IsJumping && IsGrounded())
+            {
+                _playerAnimator.SetBool("CanJump", false);
+                IsJumping = false;
+            }
+        }
+
+        private async UniTask JumpWaitTime()
+        {
+            await UniTask.WaitForSeconds(0.3f);
+            IsJumping = true;
         }
 
         private void ApplyDrag()
