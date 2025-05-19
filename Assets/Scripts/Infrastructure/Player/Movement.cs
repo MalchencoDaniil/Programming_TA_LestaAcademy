@@ -77,6 +77,15 @@ namespace Player
             Move();
         }
 
+        public void Wind(WindArea _currentWindArea, bool _isInWindArea)
+        {
+            if (_isInWindArea)
+            {
+                Vector3 _windForce = _currentWindArea.GetWindForce();
+                _rb.AddForce(_windForce * 10, ForceMode.Acceleration);
+            }
+        }
+
         private void ApplyGravity()
         {
             _rb.AddForce(Vector3.down * _gravityScale * _rb.mass, ForceMode.Acceleration);
