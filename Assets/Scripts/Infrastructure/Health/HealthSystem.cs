@@ -8,6 +8,7 @@ public class HealthSystem : MonoBehaviour, IDamageble
     [SerializeField]
     private float _health = 100;
 
+    [Header("Events")]
     [SerializeField]
     private UnityEvent OnDeath;
 

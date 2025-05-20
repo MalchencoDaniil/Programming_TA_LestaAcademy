@@ -24,6 +24,17 @@ public class PlayerCollision : MonoBehaviour
             _damageTrigger.Damage(_healthSystem);
         }
 
+        if (_other.gameObject.GetComponent<JumpTrap>())
+        {
+            JumpTrap _jumpTrap = _other.gameObject.GetComponent<JumpTrap>();
+
+            Vector3 _horizontalVelocity = new Vector3(_player._rb.velocity.x, 0, _player._rb.velocity.z);
+            _player._rb.velocity = _horizontalVelocity;
+
+            _player._rb.AddForce(Vector3.up * _jumpTrap._jumpForceAmount, ForceMode.Impulse);
+        }
+
+
         if (_other.gameObject.GetComponent<WindArea>())
         {
             WindArea windArea = _other.GetComponent<WindArea>();
@@ -33,6 +44,15 @@ public class PlayerCollision : MonoBehaviour
                 _isInWindArea = true;
                 _currentWindArea = windArea;
             }
+        }
+    }
+
+    private void OnTriggerStay(Collider _other)
+    {
+        if (_other.gameObject.GetComponent<PressureTrap>())
+        {
+            PressureTrap _pressureTrap = _other.gameObject.GetComponent<PressureTrap>();
+            _pressureTrap.TrapActivation();
         }
     }
 

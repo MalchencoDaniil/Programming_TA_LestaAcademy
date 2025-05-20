@@ -6,7 +6,7 @@ namespace Player
     [RequireComponent(typeof(Rigidbody))]
     public class Movement : MonoBehaviour
     {
-        private Rigidbody _rb;
+        internal Rigidbody _rb;
         private PlayerInput _playerInput;
 
         [Header("References")]
