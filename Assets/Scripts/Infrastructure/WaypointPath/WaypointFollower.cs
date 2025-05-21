@@ -42,7 +42,7 @@ public class WaypointFollower : MonoBehaviour
 
         transform.rotation = Quaternion.Slerp(transform.rotation, _targetRotation, Time.deltaTime * _rotationSpeed);
 
-        transform.position = _nextPosition;
+        transform.position = Vector3.MoveTowards(transform.position, _nextPosition, Time.deltaTime);
 
         if (_t >= 1f)
         {
