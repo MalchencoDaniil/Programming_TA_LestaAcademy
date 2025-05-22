@@ -92,6 +92,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Camera",
+            "id": "74e07e2c-069e-4d71-aa91-21d502e3d1d4",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "PassThrough",
+                    "id": "4c8db715-3e60-4f71-b6fe-2f7ee70c0ed0",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "684f1d05-8328-4eec-9d0d-fab5dc856d5b",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

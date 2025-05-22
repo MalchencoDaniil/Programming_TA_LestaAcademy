@@ -48,7 +48,7 @@ public class WaypointManager : MonoBehaviour
         Vector3 _startTangent = _startPosition + _startPoint.forward * Vector3.Distance(_startPosition, _endPosition) * _handleSize;
         Vector3 _endTangent = _endPosition - _endPoint.forward * Vector3.Distance(_startPosition, _endPosition) * _handleSize;
 
-        Gizmos.color = Color.green;
+        Gizmos.color = _pathColor;
         Vector3 _previousPosition = _startPosition;
         for (int i = 1; i <= _gizmoSegments; i++)
         {
